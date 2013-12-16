@@ -6,8 +6,14 @@
 
 (define-route home ("")
   (let ((offset (or (hunchentoot:get-parameter "offset") 0))
-        (limit (or (hucnehtoot:get-parameter "limit") 10)))
-    (list :body (get-quotes limit offset))))
+        (limit (or (hunchentoot:get-parameter "limit") 10)))
+    (list :body (template/quotes (get-quotes limit offset)))))
+
+(define-route q ("quote/:id")
+  (:sift-variables (id #'validate-quote-id))
+  (let* ((q (get-quote id))
+         (user (get-user (author-id q))))
+    (list :body (template/quote q user))))
 
 (define-route user/logout ("user/logout")
   (s-user-logout))

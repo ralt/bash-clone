@@ -11,6 +11,9 @@
   (define-method find-user (username)
     "Finds the user by username")
 
+  (define-method get-user (id)
+    "Gets user by id")
+
   (define-method auth-user (username password)
     "Checks if a user exists and has the supplied password")
 
@@ -20,6 +23,9 @@
   (define-method post-quote (body username)
     "Creates a new quote")
 
+  (define-method get-quote (id)
+    "Gets quote by id")
+
   (define-method get-quotes (offset limit)
     "Gets quotes")
 
@@ -27,7 +33,8 @@
     "Gets the number of quotes"))
 
 (restas:define-module #:bash-clone
-  (:use #:cl #:restas #:bash-clone.datastore))
+  (:use #:cl #:restas #:bash-clone.datastore)
+  (:export #:start-bash-clone))
 
 (defpackage #:bash-clone.pg-datastore
   (:use #:cl #:postmodern #:bash-clone.policy.datastore)

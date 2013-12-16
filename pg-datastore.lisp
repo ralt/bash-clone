@@ -50,6 +50,10 @@
     (query (:select :* :from 'users :where (:= 'name username))
            :plist)))
 
+(defmethod datastore-get-user ((datastore pg-datastore) id)
+  (with-connection (connection-spec datastore)
+    (select-dao 'users (:= 'id id))))
+
 (defmethod datastore-auth-user ((datastore pg-datastore) username password)
   (with-connection (connection-spec datastore)
     (let ((user (datastore-find-user datastore username)))
@@ -75,6 +79,10 @@
            (q (make-instance 'quotes :body body :author-id (user-id user))))
       (when (save-dao q)
         (quote-id q)))))
+
+(defmethod datastore-get-quote ((datastore pg-datastore) id)
+  (with-connection (connection-spec datastore)
+    (select-dao 'quotes (:= 'id id))))
 
 (defmethod datastore-get-quotes ((datastore pg-datastore) offset limit)
   (with-connection (connection-spec datastore)
